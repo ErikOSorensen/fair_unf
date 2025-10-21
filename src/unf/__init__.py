@@ -21,6 +21,13 @@ try:
 except ImportError:
     _has_pandas = False
 
+# File I/O integration (optional, requires pandas)
+try:
+    from .file_io import file_unf
+    _has_file_io = True
+except ImportError:
+    _has_file_io = False
+
 __version__ = "0.1.0"
 
 __all__ = [
@@ -41,4 +48,10 @@ if _has_pandas:
         "series_unf",
         "dataframe_unf",
         "dataframe_column_unfs",
+    ])
+
+# Add file I/O functions to __all__ if available
+if _has_file_io:
+    __all__.extend([
+        "file_unf",
     ])

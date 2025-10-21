@@ -80,6 +80,38 @@ column_unfs = dataframe_column_unfs(df)
 # {'id': 'UNF:6:...', 'name': 'UNF:6:...', 'score': 'UNF:6:...'}
 ```
 
+### File Format Support
+
+Calculate UNF directly from files in various formats:
+
+```python
+from unf import file_unf
+
+# Auto-detect format from extension
+unf = file_unf("data.csv")
+unf = file_unf("data.parquet")
+unf = file_unf("data.dta")  # Stata
+unf = file_unf("data.xlsx")  # Excel
+unf = file_unf("data.json")
+
+# Explicit format with custom options
+unf = file_unf("data.txt", format="csv", sep="\t")
+
+# Get metadata along with UNF
+result = file_unf("data.csv", return_metadata=True)
+# {'unf': 'UNF:6:...', 'format': 'csv', 'shape': (100, 5), 'columns': [...]}
+```
+
+**Supported formats**: CSV, TSV, Parquet, Feather, Stata (.dta), SAS, SPSS (.sav), Excel (.xlsx, .xls), JSON
+
+Install format-specific dependencies:
+```bash
+pip install unf[parquet]    # For Parquet/Feather
+pip install unf[excel]      # For Excel
+pip install unf[spss]       # For SPSS
+pip install unf[all-formats]  # All format support
+```
+
 ## Features
 
 ### Supported Data Types
