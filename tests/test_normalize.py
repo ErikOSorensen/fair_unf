@@ -3,7 +3,7 @@
 import math
 from datetime import date, datetime, time
 import pytest
-from ufn.normalize import (
+from unf.normalize import (
     normalize_numeric,
     normalize_string,
     normalize_boolean,

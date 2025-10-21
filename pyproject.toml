@@ -1,5 +1,5 @@
 [project]
-name = "ufn"
+name = "unf"
 version = "0.1.0"
 description = "Universal Numerical Fingerprint (UNF) calculation for datasets"
 readme = "README.md"

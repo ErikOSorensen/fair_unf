@@ -16,19 +16,19 @@ This implementation follows the [UNF v6 specification](https://guides.dataverse.
 ## Installation
 
 ```bash
-uv add ufn
+uv add unf
 ```
 
 Or with pip:
 
 ```bash
-pip install ufn
+pip install unf
 ```
 
 ## Quick Start
 
 ```python
-from ufn import calculate_unf, calculate_dataset_unf, combine_unfs
+from unf import calculate_unf, calculate_dataset_unf, combine_unfs
 
 # Calculate UNF for a single variable (column)
 data = [1.0, 2.0, 3.0, 4.0, 5.0]
@@ -73,7 +73,7 @@ The library correctly handles:
 ### Configuration Options
 
 ```python
-from ufn.unf import UNFConfig
+from unf.unf import UNFConfig
 
 # Custom configuration
 config = UNFConfig(
@@ -126,7 +126,7 @@ Combine multiple UNF fingerprints (order-independent).
 Individual normalization functions are available for specific use cases:
 
 ```python
-from ufn import (
+from unf import (
     normalize_numeric,
     normalize_string,
     normalize_boolean,
@@ -146,8 +146,8 @@ This project uses `uv` for dependency management.
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Clone the repository
-git clone https://github.com/yourusername/ufn.git
-cd ufn
+git clone https://github.com/yourusername/unf.git
+cd unf
 
 # Install dependencies
 uv sync --dev
@@ -160,7 +160,7 @@ uv sync --dev
 uv run pytest
 
 # Run with coverage
-uv run pytest --cov=ufn --cov-report=html
+uv run pytest --cov=unf --cov-report=html
 
 # Run specific test file
 uv run pytest tests/test_unf.py -v
@@ -169,8 +169,8 @@ uv run pytest tests/test_unf.py -v
 ### Project Structure
 
 ```
-ufn/
-  src/ufn/
+unf/
+  src/unf/
     __init__.py        # Public API
     unf.py             # Core UNF calculation
     normalize.py       # Data type normalization

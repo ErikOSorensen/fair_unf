@@ -15,7 +15,7 @@ This is a Python library implementing Universal Numerical Fingerprint (UNF) vers
 
 ### Running Tests
 - Run all tests: `uv run pytest`
-- Run with coverage: `uv run pytest --cov=ufn --cov-report=html`
+- Run with coverage: `uv run pytest --cov=unf --cov-report=html`
 - Run specific test file: `uv run pytest tests/test_unf.py -v`
 - Run specific test: `uv run pytest tests/test_unf.py::TestCalculateUNF::test_simple_numeric_vector -v`
 
@@ -32,20 +32,20 @@ This is a Python library implementing Universal Numerical Fingerprint (UNF) vers
 
 The library is organized into three main modules:
 
-1. **`src/ufn/normalize.py`** - Data type normalization
+1. **`src/unf/normalize.py`** - Data type normalization
    - Implements normalization rules for different data types (numeric, string, boolean, dates, etc.)
    - Each data type has its own normalization function following UNF v6 spec
    - Key challenge: Numeric normalization must handle IEEE 754 edge cases (±0.0, ±inf, NaN)
    - Uses Python's `Decimal` for precise rounding to avoid floating-point errors
 
-2. **`src/ufn/unf.py`** - Core UNF calculation
+2. **`src/unf/unf.py`** - Core UNF calculation
    - `UNFConfig`: Configuration class for UNF parameters (precision, hash bits, etc.)
    - `calculate_unf()`: Main function to calculate UNF for a single vector (column)
    - `combine_unfs()`: Combines multiple UNFs in a sort-based, order-independent way
    - `calculate_dataset_unf()`: Convenience function for multi-column datasets
    - Uses SHA256 hashing with configurable truncation and base64 encoding
 
-3. **`src/ufn/__init__.py`** - Public API
+3. **`src/unf/__init__.py`** - Public API
    - Exports the main functions and classes users interact with
 
 ### Key Design Principles

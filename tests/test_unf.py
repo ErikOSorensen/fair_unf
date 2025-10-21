@@ -1,8 +1,8 @@
 """Tests for UNF calculation functions."""
 
 import pytest
-from ufn import calculate_unf, combine_unfs
-from ufn.unf import UNFConfig, calculate_dataset_unf
+from unf import calculate_unf, combine_unfs
+from unf.unf import UNFConfig, calculate_dataset_unf
 
 
 class TestUNFConfig:

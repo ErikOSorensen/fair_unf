@@ -1,7 +1,7 @@
 """Basic usage examples for the UNF library."""
 
-from ufn import calculate_unf, calculate_dataset_unf, combine_unfs
-from ufn.unf import UNFConfig
+from unf import calculate_unf, calculate_dataset_unf, combine_unfs
+from unf.unf import UNFConfig
 
 
 def example_simple_vector():
