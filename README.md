@@ -25,6 +25,12 @@ Or with pip:
 pip install unf
 ```
 
+For pandas integration:
+
+```bash
+pip install unf[pandas]
+```
+
 ## Quick Start
 
 ```python
@@ -49,6 +55,29 @@ unf1 = calculate_unf([1, 2, 3])
 unf2 = calculate_unf([4, 5, 6])
 combined = combine_unfs([unf1, unf2])
 print(combined)
+```
+
+### Pandas Integration
+
+```python
+import pandas as pd
+from unf import series_unf, dataframe_unf, dataframe_column_unfs
+
+# Calculate UNF for a pandas Series
+series = pd.Series([1.0, 2.0, 3.0, 4.0, 5.0])
+unf = series_unf(series)
+
+# Calculate UNF for a pandas DataFrame
+df = pd.DataFrame({
+    'id': [1, 2, 3],
+    'name': ['Alice', 'Bob', 'Charlie'],
+    'score': [85.5, 90.0, 88.5]
+})
+df_unf = dataframe_unf(df)
+
+# Get UNFs for individual columns
+column_unfs = dataframe_column_unfs(df)
+# {'id': 'UNF:6:...', 'name': 'UNF:6:...', 'score': 'UNF:6:...'}
 ```
 
 ## Features

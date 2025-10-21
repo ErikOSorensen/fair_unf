@@ -14,6 +14,13 @@ from .normalize import (
     normalize_datetime,
 )
 
+# Pandas integration (optional)
+try:
+    from .pandas_unf import series_unf, dataframe_unf, dataframe_column_unfs
+    _has_pandas = True
+except ImportError:
+    _has_pandas = False
+
 __version__ = "0.1.0"
 
 __all__ = [
@@ -27,3 +34,11 @@ __all__ = [
     "normalize_date",
     "normalize_datetime",
 ]
+
+# Add pandas functions to __all__ if available
+if _has_pandas:
+    __all__.extend([
+        "series_unf",
+        "dataframe_unf",
+        "dataframe_column_unfs",
+    ])
