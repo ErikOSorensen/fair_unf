@@ -1,0 +1,20 @@
+[project]
+name = "ufn"
+version = "0.1.0"
+description = "Universal Numerical Fingerprint (UNF) calculation for datasets"
+readme = "README.md"
+authors = [
+    { name = "Erik Ø. Sørensen", email = "erik.sorensen@nhh.no" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.4,<0.10.0"]
+build-backend = "uv_build"
