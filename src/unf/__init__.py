@@ -27,6 +27,13 @@ try:
 except ImportError:
     _has_pandas = False
 
+# Polars integration (optional)
+try:
+    from . import polars_unf
+    _has_polars = True
+except ImportError:
+    _has_polars = False
+
 # File I/O integration (optional, requires pandas)
 try:
     from .file_io import file_unf
@@ -55,6 +62,12 @@ if _has_pandas:
         "series_unf",
         "dataframe_unf",
         "dataframe_column_unfs",
+    ])
+
+# Add polars module to __all__ if available
+if _has_polars:
+    __all__.extend([
+        "polars_unf",
     ])
 
 # Add file I/O functions to __all__ if available

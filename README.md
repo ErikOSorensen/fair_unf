@@ -40,6 +40,9 @@ Install with support for specific file formats:
 # For pandas integration
 pip install git+https://github.com/ErikOSorensen/fair_unf.git[pandas]
 
+# For polars integration (recommended for better null handling)
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[polars]
+
 # For Stata files (.dta)
 pip install git+https://github.com/ErikOSorensen/fair_unf.git[stata]
 
@@ -104,6 +107,40 @@ df_unf = dataframe_unf(df)
 column_unfs = dataframe_column_unfs(df)
 # {'id': 'UNF:6:...', 'name': 'UNF:6:...', 'score': 'UNF:6:...'}
 ```
+
+### Polars Integration
+
+Polars has superior null handling compared to pandas - it properly distinguishes between missing data (null) and floating-point NaN values.
+
+```python
+import polars as pl
+from unf import polars_unf
+
+# Calculate UNF for a polars Series
+series = pl.Series([1.0, 2.0, 3.0, 4.0, 5.0])
+unf = polars_unf.series_unf(series)
+
+# Polars handles missing values correctly (converts to None automatically)
+series_with_nulls = pl.Series([1.0, 2.0, None, 4.0])
+unf = polars_unf.series_unf(series_with_nulls)
+
+# Calculate UNF for a polars DataFrame
+df = pl.DataFrame({
+    'id': [1, 2, 3],
+    'name': ['Alice', 'Bob', 'Charlie'],
+    'score': [85.5, 90.0, 88.5]
+})
+df_unf = polars_unf.dataframe_unf(df)
+
+# Get UNFs for individual columns
+column_unfs = polars_unf.dataframe_column_unfs(df)
+# {'id': 'UNF:6:...', 'name': 'UNF:6:...', 'score': 'UNF:6:...'}
+```
+
+**Why polars?** Polars uses out-of-band encoding for missing values (separate validity bitmask), which means:
+- Missing values are automatically converted to Python `None` (no NaN conversion needed)
+- Works with all data types, including integers with nulls
+- Clear semantic distinction between null (missing) and NaN (undefined float value)
 
 ### File Format Support
 

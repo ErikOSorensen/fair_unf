@@ -13,6 +13,9 @@ dependencies = []
 pandas = [
     "pandas>=2.0.0",
 ]
+polars = [
+    "polars>=1.0.0",
+]
 parquet = [
     "pandas>=2.0.0",
     "pyarrow>=10.0.0",
