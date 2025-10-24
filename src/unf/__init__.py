@@ -5,7 +5,13 @@ fingerprints of datasets. UNF provides a way to verify data integrity and
 detect changes in datasets.
 """
 
-from .unf import calculate_unf, combine_unfs, calculate_dataset_unf, UNFConfig
+from .unf import (
+    calculate_unf,
+    combine_unfs,
+    calculate_dataset_unf,
+    calculate_unf_from_stata,
+    UNFConfig,
+)
 from .normalize import (
     normalize_numeric,
     normalize_string,
@@ -34,6 +40,7 @@ __all__ = [
     "calculate_unf",
     "combine_unfs",
     "calculate_dataset_unf",
+    "calculate_unf_from_stata",
     "UNFConfig",
     "normalize_numeric",
     "normalize_string",

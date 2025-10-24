@@ -143,13 +143,33 @@ def calculate_unf(
         'UNF:6:...'
         >>> calculate_unf([1.0, None, 3.0])
         'UNF:6:...'
+
+    Note:
+        When using with pandas DataFrames, NaN values should be converted to None
+        first for correct missing value handling. See calculate_unf_pandas() for
+        a convenience function that handles this automatically.
     """
     if config is None:
         config = UNFConfig()
 
+    # Convert NaN to None for proper missing value handling
+    # This is necessary because pandas and other libraries use NaN (float('nan'))
+    # for missing values, but UNF requires missing values to be encoded as None
+    cleaned_data = []
+    for value in data:
+        # Check if value is NaN (works for numpy, pandas, and regular floats)
+        if isinstance(value, float):
+            import math
+            if math.isnan(value):
+                cleaned_data.append(None)
+            else:
+                cleaned_data.append(value)
+        else:
+            cleaned_data.append(value)
+
     # Normalize each element
     normalized_elements = []
-    for value in data:
+    for value in cleaned_data:
         norm_value = normalize_value(value, config)
 
         # Non-missing values get terminated with newline + null byte
@@ -262,3 +282,61 @@ def calculate_dataset_unf(
 
     # Combine them
     return combine_unfs(variable_unfs, config)
+
+
+def calculate_unf_from_stata(
+    filepath: str,
+    config: UNFConfig | None = None
+) -> dict[str, str]:
+    """Calculate UNFs for all variables in a Stata file.
+
+    This function reads a Stata (.dta) file and calculates UNF values that
+    match R's haven/UNF implementation by:
+    - Using numeric codes for labeled variables (not string labels)
+    - Properly handling missing values (NaN -> None)
+
+    Args:
+        filepath: Path to the Stata (.dta) file.
+        config: UNF configuration (uses defaults if None).
+
+    Returns:
+        Dictionary mapping variable names to their UNF fingerprints, plus a
+        special '__dataset__' key for the dataset-level UNF.
+
+    Examples:
+        >>> unfs = calculate_unf_from_stata("data.dta")
+        >>> print(unfs['variable_name'])
+        'UNF:6:...'
+        >>> print(unfs['__dataset__'])  # dataset-level UNF
+        'UNF:6:...'
+
+    Note:
+        Requires the pyreadstat package to be installed:
+            pip install pyreadstat
+    """
+    try:
+        import pyreadstat
+    except ImportError:
+        raise ImportError(
+            "pyreadstat is required for reading Stata files. "
+            "Install it with: pip install pyreadstat"
+        )
+
+    if config is None:
+        config = UNFConfig()
+
+    # Read Stata file without converting value labels to strings
+    # This matches R's haven behavior where labeled variables retain numeric codes
+    df, meta = pyreadstat.read_dta(filepath, apply_value_formats=False)
+
+    # Calculate UNF for each variable
+    variable_unfs = {}
+    for column in df.columns:
+        # NaN values are automatically handled by calculate_unf
+        variable_unfs[column] = calculate_unf(df[column].tolist(), config)
+
+    # Calculate dataset-level UNF
+    all_variable_data = [df[col].tolist() for col in df.columns]
+    variable_unfs['__dataset__'] = calculate_dataset_unf(all_variable_data, config)
+
+    return variable_unfs
