@@ -2,6 +2,11 @@
 
 A Python library for calculating Universal Numerical Fingerprint (UNF) version 6 signatures for datasets, compatible with the Dataverse implementation.
 
+I have partially vibe-coded this library with the help of Claude code.
+
+It is not yet as conforming to the Dataverse or the R implementation by Thomas Leeper (https://github.com/leeper/UNF), but I am not sure if the 
+R version is fully up to date (it has been removed from CRAN for failing tests).
+
 ## What is UNF?
 
 Universal Numerical Fingerprint (UNF) is a cryptographic hash that creates unique, verifiable signatures for datasets. UNF is used by [Dataverse](https://dataverse.org/) and other data management systems to:
