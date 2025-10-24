@@ -15,20 +15,40 @@ This implementation follows the [UNF v6 specification](https://guides.dataverse.
 
 ## Installation
 
+The package is currently available from GitHub:
+
 ```bash
-uv add unf
+# Install directly from GitHub
+pip install git+https://github.com/ErikOSorensen/fair_unf.git
+
+# Or clone and install locally
+git clone https://github.com/ErikOSorensen/fair_unf.git
+cd fair_unf
+pip install .
 ```
 
-Or with pip:
+### Optional Dependencies
+
+Install with support for specific file formats:
 
 ```bash
-pip install unf
-```
+# For pandas integration
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[pandas]
 
-For pandas integration:
+# For Stata files (.dta)
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[stata]
 
-```bash
-pip install unf[pandas]
+# For Parquet/Feather files
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[parquet]
+
+# For Excel files
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[excel]
+
+# For SPSS files
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[spss]
+
+# For all format support
+pip install git+https://github.com/ErikOSorensen/fair_unf.git[all-formats]
 ```
 
 ## Quick Start
@@ -104,13 +124,32 @@ result = file_unf("data.csv", return_metadata=True)
 
 **Supported formats**: CSV, TSV, Parquet, Feather, Stata (.dta), SAS, SPSS (.sav), Excel (.xlsx, .xls), JSON
 
-Install format-specific dependencies:
-```bash
-pip install unf[parquet]    # For Parquet/Feather
-pip install unf[excel]      # For Excel
-pip install unf[spss]       # For SPSS
-pip install unf[all-formats]  # All format support
+See the [Installation](#installation) section for how to install with format-specific dependencies.
+
+### Stata Files
+
+For Stata `.dta` files, the library provides specialized support that matches R's `haven` and UNF package behavior:
+
+```python
+from unf import calculate_unf_from_stata
+
+# Calculate UNFs for all variables in a Stata file
+variable_unfs = calculate_unf_from_stata("data.dta")
+
+# Results include individual variable UNFs and dataset-level UNF
+for var_name, var_unf in variable_unfs.items():
+    if var_name == '__dataset__':
+        print(f"Dataset UNF: {var_unf}")
+    else:
+        print(f"{var_name}: {var_unf}")
 ```
+
+**Important**: This implementation:
+- Uses numeric codes for labeled variables (not string labels)
+- Automatically handles missing values
+- Matches R's `haven::read_dta()` + `UNF::unf()` behavior when labeled variables are converted to numeric
+
+Install Stata support with: `pip install git+https://github.com/ErikOSorensen/fair_unf.git[stata]`
 
 ## Features
 
@@ -181,6 +220,18 @@ Combine multiple UNF fingerprints (order-independent).
 - `config`: Optional `UNFConfig` instance
 
 **Returns:** Combined UNF fingerprint string
+
+#### `calculate_unf_from_stata(filepath, config=None)`
+
+Calculate UNFs for all variables in a Stata file.
+
+**Parameters:**
+- `filepath`: Path to Stata `.dta` file
+- `config`: Optional `UNFConfig` instance
+
+**Returns:** Dictionary mapping variable names to UNF strings, including `'__dataset__'` for the dataset-level UNF
+
+**Note:** Requires `pyreadstat` package. Install with `pip install git+https://github.com/ErikOSorensen/fair_unf.git[stata]`
 
 ### Normalization Functions
 
